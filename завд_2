@@ -1,0 +1,134 @@
+using System;
+
+// Інтерфейс IParent для геометричних тіл
+interface IParent
+{
+    string Info();
+    double Metod1(); // Площа повної поверхні
+    double Metod2(); // Об'єм
+}
+
+// Клас Child1, що описує паралелепіпед
+class Child1 : IParent
+{
+    private double pole1; // a
+    private double pole2; // b
+    private double pole3; // c
+
+    public Child1(double length, double width, double height)
+    {
+        pole1 = length;
+        pole2 = width;
+        pole3 = height;
+    }
+
+    public string Info()
+    {
+        return $"Паралелепіпед: a = {pole1}, b = {pole2}, c = {pole3}";
+    }
+
+    public double Metod1()
+    {
+        return Math.Round(2 * (pole1 * pole2 + pole1 * pole3 + pole2 * pole3), 2);
+    }
+
+    public double Metod2()
+    {
+        return Math.Round(pole1 * pole2 * pole3, 2);
+    }
+}
+
+// Клас Child2, що описує конус
+class Child2 : IParent
+{
+    private double pole4; // Радіус підстави
+    private double pole5; // Висота
+
+    public Child2(double radius, double height)
+    {
+        pole4 = radius;
+        pole5 = height;
+    }
+
+    public string Info()
+    {
+        return $"Конус: Радіус = {pole4}, Висота = {pole5}";
+    }
+
+    public double Metod1()
+    {
+        double slantHeight = Math.Sqrt(pole4 * pole4 + pole5 * pole5);
+        return Math.Round(Math.PI * pole4 * (pole4 + slantHeight), 2);
+    }
+
+    public double Metod2()
+    {
+        return Math.Round((Math.PI * pole4 * pole4 * pole5) / 3, 2);
+    }
+}
+
+// Клас Child3, що описує кулю
+class Child3 : IParent
+{
+    private double pole6; // Радіус кулі
+
+    public Child3(double radius)
+    {
+        pole6 = radius;
+    }
+
+    public string Info()
+    {
+        return $"Куля: Радіус = {pole6}";
+    }
+
+    public double Metod1()
+    {
+        return Math.Round(4 * Math.PI * pole6 * pole6, 2);
+    }
+
+    public double Metod2()
+    {
+        return Math.Round((4.0 / 3.0) * Math.PI * pole6 * pole6 * pole6, 2);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+        Random random = new Random();
+
+        for (int i = 0; i < 5; i++)
+        {
+            IParent geometricObject;
+            int objectType = random.Next(3);
+
+            if (objectType == 0)
+            {
+                double length = random.Next(5, 20);
+                double width = random.Next(5, 20);
+                double height = random.Next(5, 20);
+                geometricObject = new Child1(length, width, height);
+            }
+            else if (objectType == 1)
+            {
+                double radius = random.Next(3, 10);
+                double height = random.Next(5, 15);
+                geometricObject = new Child2(radius, height);
+            }
+            else
+            {
+                double radius = random.Next(2, 8);
+                geometricObject = new Child3(radius);
+            }
+
+            Console.WriteLine(geometricObject.Info());
+            Console.WriteLine($"S: {geometricObject.Metod1()}");
+            Console.WriteLine($"V: {geometricObject.Metod2()}");
+            Console.WriteLine();
+        }
+    }
+}
