@@ -1,0 +1,92 @@
+using System;
+
+// Абстрактний клас Parent
+abstract class Parent
+{
+    public abstract string Info(); 
+    public abstract double Metod(); 
+}
+
+// Дочірній клас Child1, що описує фізичну особу
+class Child1 : Parent
+{
+    private double pole1; // Загальний дохід
+    private double pole2; // Ставка податку (%)
+
+    public Child1(double income, double taxRate)
+    {
+        pole1 = income;
+        pole2 = taxRate;
+    }
+
+    public override string Info()
+    {
+        return $"Фізична особа: Загальний дохід = {pole1}, Ставка податку = {pole2}%";
+    }
+
+    public override double Metod()
+    {
+        return pole1 * pole2 / 100;
+    }
+}
+
+// Дочірній клас Child2, що описує юридичну особу
+class Child2 : Parent
+{
+    private double pole3; // Виручка від продажів
+    private double pole4; // Собівартість
+    private double pole5; // Додаткові витрати
+    private double pole6; // Ставка податку (%)
+
+    public Child2(double revenue, double cost, double expenses, double taxRate)
+    {
+        pole3 = revenue;
+        pole4 = cost;
+        pole5 = expenses;
+        pole6 = taxRate;
+    }
+
+    public override string Info()
+    {
+        return $"Юридична особа: Виручка = {pole3}, Собівартість = {pole4}, Додаткові витрати = {pole5}, Ставка податку = {pole6}%";
+    }
+
+    public override double Metod()
+    {
+        double profit = pole3 - pole4 - pole5;
+        return profit * pole6 / 100;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+        Random random = new Random();
+
+        for (int i = 0; i < 5; i++)
+        {
+            Parent taxpayer;
+            if (random.Next(2) == 0)
+            {
+                double income = random.Next(1000, 10000);
+                double taxRate = random.Next(10, 30);
+                taxpayer = new Child1(income, taxRate);
+            }
+            else
+            {
+                double revenue = random.Next(5000, 20000);
+                double cost = random.Next(3000, 15000);
+                double expenses = random.Next(1000, 5000);
+                double taxRate = random.Next(15, 35);
+                taxpayer = new Child2(revenue, cost, expenses, taxRate);
+            }
+
+            Console.WriteLine(taxpayer.Info());
+            double tax = taxpayer.Metod();
+            Console.WriteLine($"Податок: {tax}");
+        }
+    }
+}
